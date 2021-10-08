@@ -19,14 +19,12 @@ public class CS441Project4 extends ApplicationAdapter {
 	float w, h;
 
 	Circle mainCir;
+	private boolean moving;
 	
 	@Override
 	public void create () {
-		Gdx.input.setInputProcessor(new InputAdapter());
-
 		batch = new SpriteBatch();
 		img = new Texture("badlogic.jpg");
-
 		mainSprite = new Sprite(img);
 
 		x = 0;
@@ -35,21 +33,44 @@ public class CS441Project4 extends ApplicationAdapter {
 		dy = 0;
 
 		mainCir = new Circle(x, y, mainSprite.getWidth() / 2);
+
+		Gdx.input.setInputProcessor(new InputAdapter() {
+			@Override public boolean keyDown (int keycode) {
+				if(keycode == Input.Keys.RIGHT){
+					moving = true;
+					dx = 15;
+				}else if(keycode == Input.Keys.LEFT){
+
+				}
+				return true;
+			}
+			@Override public boolean keyUp (int keycode) {
+				if(keycode == Input.Keys.RIGHT){
+					moving = false;
+					dx = 0;
+				}
+				return false;
+			}
+		});
+
 	}
 
 	@Override
 	public void render () {
 		ScreenUtils.clear(0, 0, 0, 1);
 
-		x = x + dx;
+		//x = x + dx;
 		y = y + dy;
 
-		if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
-			dx = 20;
+		mainCir.x = x;
+		mainCir.y = y;
+
+		if(moving){
+			x = x + dx;
 		}
 
 		batch.begin();
-		batch.draw(img, 0, 0);
+		batch.draw(img, x, y);
 		batch.end();
 	}
 	
