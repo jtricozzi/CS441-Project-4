@@ -16,8 +16,9 @@ import java.util.ArrayList;
 public class CS441Project4 extends ApplicationAdapter {
 	SpriteBatch batch;
 	Texture img, rectImg;
-	Sprite mainSprite, flyingObject;
-	ArrayList<Sprite> obstacleList = new ArrayList<Sprite>();
+	Sprite mainSprite;
+	MyObstacles obsSprite;
+	ArrayList<MyObstacles> obstacleList = new ArrayList<MyObstacles>();
 
 
 
@@ -34,9 +35,12 @@ public class CS441Project4 extends ApplicationAdapter {
 		img = new Texture("badlogic.jpg");
 		rectImg = new Texture("rectangleImage.png");
 		mainSprite = new Sprite(img);
-		flyingObject = new Sprite(rectImg);
+		//flyingObject = new Sprite(rectImg);
 
-		//for(int i = 0; )
+		for(int i = 0; i < 10; i++){
+			MyObstacles individualRect = new MyObstacles(rectImg);
+			obstacleList.add(individualRect);
+		}
 
 		x = 0;
 		y = 0;
@@ -46,6 +50,7 @@ public class CS441Project4 extends ApplicationAdapter {
 
 
 		mainCir = new Circle(x, y, mainSprite.getWidth() / 2);
+		rect = new Rectangle(obstacleList.get(0).x, obstacleList.get(0).y, obstacleList.get(0).w, obstacleList.get(0).h);
 
 		Gdx.input.setInputProcessor(new InputAdapter() {
 			@Override public boolean keyDown (int keycode) {
@@ -86,7 +91,7 @@ public class CS441Project4 extends ApplicationAdapter {
 
 	@Override
 	public void render () {
-		ScreenUtils.clear(0, 0, 0, 1);
+		ScreenUtils.clear(255, 255, 255, 1);
 
 		//x = x + dx;
 		//y = y + dy;
@@ -94,13 +99,20 @@ public class CS441Project4 extends ApplicationAdapter {
 		mainCir.x = x;
 		mainCir.y = y;
 
+		rect.x = 10;
+		rect.y = 10;
+
 		if(moving){
 			x = x + dx;
 			y = y + dy;
 		}
 
+
+
+
 		batch.begin();
-		batch.draw(img, x, y);
+		batch.draw(mainSprite, x, y);
+		batch.draw(rectImg, obstacleList.get(0).x, obstacleList.get(0).y);
 		batch.end();
 	}
 	
